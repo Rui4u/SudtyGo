@@ -19,7 +19,7 @@ func main() {
 		}
 	}
 
-	// for range
+	// for 02_range
 
 	nums := "abcdefg"
 
