@@ -1,7 +1,7 @@
 package main
 
 import (
-	proto2 "awesomeProject/14_grpc_test/grpc_token_auth_test/proto"
+	proto2 "awesomeProject/14_grpc_test/grpc_error_test/proto"
 	"context"
 	"fmt"
 	"google.golang.org/grpc"
@@ -15,13 +15,10 @@ type ServerHH struct {
 	*proto2.UnimplementedGreeterServer
 }
 
-type Vailidator interface {
-	Validate() error
-}
-
 func (c *ServerHH) SayHello(ctx context.Context, request *proto2.HelloRequest) (*proto2.HelloReply, error) {
-	return &proto2.HelloReply{
 
+	return nil, status.Error(codes.NotFound, "没找到")
+	return &proto2.HelloReply{
 		Message: "hello" + request.Name,
 	}, nil
 }
@@ -53,12 +50,6 @@ func main() {
 		}
 
 		fmt.Println("接收一个新请求")
-
-		if r, ok := req.(Vailidator); ok {
-			if err := r.Validate(); err != nil {
-				return nil, status.Error(codes.InvalidArgument, err.Error())
-			}
-		}
 
 		res, err := handler(ctx, req)
 		fmt.Println("请求已经完成")

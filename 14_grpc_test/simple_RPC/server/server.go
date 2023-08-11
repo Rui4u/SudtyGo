@@ -1,8 +1,9 @@
 package main
 
 import (
-	proto2 "awesomeProject/14_grpc_test/HttpTest/proto"
+	proto2 "awesomeProject/14_grpc_test/simple_RPC/proto"
 	"context"
+	"fmt"
 	"google.golang.org/grpc"
 	"net"
 )
@@ -18,7 +19,17 @@ func (c *ServerHH) SayHello(ctx context.Context, request *proto2.HelloRequest) (
 }
 
 func main() {
-	g := grpc.NewServer()
+
+	interceptor := func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+		fmt.Println("接收一个新请求")
+		res, err := handler(ctx, req)
+		fmt.Println("请求已经完成")
+		return res, err
+	}
+
+	opt := grpc.UnaryInterceptor(interceptor) //生成拦截器
+	g := grpc.NewServer(opt)
+
 	proto2.RegisterGreeterServer(
 		g,
 		&ServerHH{},

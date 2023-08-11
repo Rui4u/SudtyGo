@@ -1,0 +1,45 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+option go_package = ".;proto";
+service Greeter {
+    rpc GetStream(StreamReqData) returns (stream StreamResData); //服务端模式
+    rpc PostStream(stream StreamReqData) returns (StreamResData); //客户端模式
+    rpc AllStream(stream StreamReqData) returns (stream StreamResData); //双向流模式
+}
+
+message  StreamReqData {
+    string  data = 1;
+}
+
+message Result {
+    string name = 1;
+    string age = 2;
+    Gender gender = 3;
+    map<string , string> mp = 4;
+    google.protobuf.Timestamp addTime = 5;
+}
+
+enum  Gender {
+    MALE = 0;
+    FEMAIL = 1;
+}
+
+message  StreamResData {
+    string  data = 1;
+    repeated Result result = 2;
+}
+
+
+//message  StreamResData {
+//    string  data = 1;
+//
+//    message Result {
+//        string name = 1;
+//        string age = 2;
+//    }
+//
+//    repeated Result result = 2;
+//}
+
+
+
