@@ -1,25 +1,25 @@
 package main
 
 import (
-	"awesomeProject/14_grpc_test/proto"
+	proto2 "awesomeProject/14_grpc_test/HttpTest/proto"
 	"context"
 	"google.golang.org/grpc"
 	"net"
 )
 
 type ServerHH struct {
-	*proto.UnimplementedGreeterServer
+	*proto2.UnimplementedGreeterServer
 }
 
-func (c *ServerHH) SayHello(ctx context.Context, request *proto.HelloRequest) (*proto.HelloReply, error) {
-	return &proto.HelloReply{
+func (c *ServerHH) SayHello(ctx context.Context, request *proto2.HelloRequest) (*proto2.HelloReply, error) {
+	return &proto2.HelloReply{
 		Message: "hello" + request.Name,
 	}, nil
 }
 
 func main() {
 	g := grpc.NewServer()
-	proto.RegisterGreeterServer(
+	proto2.RegisterGreeterServer(
 		g,
 		&ServerHH{},
 	)
